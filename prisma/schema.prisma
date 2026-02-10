@@ -1,0 +1,163 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email       String    @unique
+  firstName   String    @map("first_name")
+  lastName    String?   @map("last_name")
+  dateOfBirth DateTime  @map("date_of_birth") @db.Date
+  gender      String
+  address     String
+  phone       String
+  role        role_enum @default(user)
+  authId      String?   @map("auth_id") @db.Uuid
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  password    String?
+  accounts    Account[]
+  bookings    Booking[]
+  sessions    Session[]
+
+  @@index([authId], map: "idx_users_auth_id")
+  @@index([email], map: "idx_users_email")
+  @@map("users")
+}
+
+model Account {
+  id                String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId            String    @map("user_id") @db.Uuid
+  type              String
+  provider          String
+  providerAccountId String    @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  created_at        DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime? @default(now()) @db.Timestamptz(6)
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId], map: "idx_accounts_user_id")
+  @@map("accounts")
+}
+
+model Session {
+  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  sessionToken String    @unique @map("session_token")
+  userId       String    @map("user_id") @db.Uuid
+  expires      DateTime  @db.Timestamptz(6)
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([sessionToken], map: "idx_sessions_session_token")
+  @@index([userId], map: "idx_sessions_user_id")
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime @db.Timestamptz(6)
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}
+
+model TestCategory {
+  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name        String
+  description String?
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  tests       Test[]
+
+  @@map("test_category")
+}
+
+model Test {
+  id           String                   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name         String
+  categoryId   String?                  @map("category") @db.Uuid
+  description  String?
+  duration     Unsupported("interval")?
+  cost         Decimal?                 @db.Decimal
+  price        Decimal?                 @db.Decimal
+  idealRange   String?                  @map("ideal_range")
+  popular      Boolean?                 @default(false)
+  preparation  String?
+  reportTime   String?                  @map("report_time")
+  createdAt    DateTime?                @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime?                @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  category     TestCategory?            @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  testBookings TestBooking[]
+
+  @@index([categoryId], map: "idx_tests_category")
+  @@map("tests")
+}
+
+model LabBranch {
+  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name         String
+  address      String
+  phone        String
+  email        String
+  openingHours String?   @map("opening_hours")
+  managerName  String?   @map("manager_name")
+  createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  bookings     Booking[]
+
+  @@map("lab_branches")
+}
+
+model Booking {
+  id                 String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId             String?       @map("user_id") @db.Uuid
+  status             String?
+  date               DateTime?     @db.Date
+  labId              String?       @map("lab") @db.Uuid
+  totalPrice         Decimal?      @map("total_price") @db.Decimal
+  collectionLocation String?       @map("collection_location")
+  createdAt          DateTime?     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime?     @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  lab                LabBranch?    @relation(fields: [labId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user               User?         @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  testBookings       TestBooking[]
+
+  @@index([userId], map: "idx_bookings_user_id")
+  @@map("bookings")
+}
+
+model TestBooking {
+  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  bookingId   String?   @map("booking_id") @db.Uuid
+  testId      String?   @map("test_id") @db.Uuid
+  resultValue String?   @map("result_value")
+  remarks     String?
+  performedAt DateTime? @map("performed_at") @db.Timestamp(6)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  booking     Booking?  @relation(fields: [bookingId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  test        Test?     @relation(fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([bookingId], map: "idx_tests_bookings_booking_id")
+  @@index([testId], map: "idx_tests_bookings_test_id")
+  @@map("tests_bookings")
+}
+
+enum role_enum {
+  admin
+  user
+}
