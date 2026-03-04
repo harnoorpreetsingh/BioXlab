@@ -6,6 +6,66 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
+export const signUpAction = async (formData: FormData) => {
+  const firstName = formData.get("firstName") as string;
+  const lastName = formData.get("lastName") as string;
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
+  const dateOfBirth = formData.get("dateOfBirth") as string;
+  const gender = formData.get("gender") as string;
+  const address = formData.get("address") as string;
+  const phone = formData.get("phone") as string;
+
+  // --- Validation (outside try/catch is fine) ---
+  if (!firstName || !email || !password || !dateOfBirth || !gender || !address || !phone) {
+    return encodedRedirect("error", "/sign-up", "All fields are required");
+  }
+  if (password !== confirmPassword) {
+    return encodedRedirect("error", "/sign-up", "Passwords do not match");
+  }
+  if (password.length < 8) {
+    return encodedRedirect("error", "/sign-up", "Password must be at least 8 characters");
+  }
+
+  // --- DB work: collect error message, never redirect inside try/catch ---
+  // (Next.js redirect() throws a special "NEXT_REDIRECT" error internally;
+  //  if caught, it shows up as the error message itself.)
+  let errorMessage: string | null = null;
+
+  try {
+    const existingUser = await prisma.user.findUnique({ where: { email } });
+    if (existingUser) {
+      errorMessage = "An account with this email already exists";
+    } else {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await prisma.user.create({
+        data: {
+          email,
+          password: hashedPassword,
+          firstName,
+          lastName: lastName || null,
+          dateOfBirth: new Date(dateOfBirth),
+          gender,
+          address,
+          phone,
+          role: "user",
+        },
+      });
+    }
+  } catch (error: any) {
+    console.error("Sign up error:", error);
+    errorMessage = error.message || "Failed to create account";
+  }
+
+  // --- Redirects always happen OUTSIDE try/catch ---
+  if (errorMessage) {
+    return encodedRedirect("error", "/sign-up", errorMessage);
+  }
+  return encodedRedirect("success", "/sign-in", "Account created! Please sign in.");
+};
+
+
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -76,7 +136,7 @@ export const resetPasswordAction = async (formData: FormData) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     await prisma.user.update({
       where: { email },
       data: { password: hashedPassword },

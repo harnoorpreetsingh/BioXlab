@@ -132,15 +132,15 @@ export default function ProfilePage() {
       .then(async () => {
         // Refresh the user data to reflect changes
         await refreshAppUser();
-        
+
         const saveBtn = document.querySelector(".save-button");
         if (saveBtn) {
           gsap.to(saveBtn, {
-            backgroundColor: "rgb(22, 163, 74)",
+            backgroundColor: "rgb(5, 150, 105)", // emerald-600
             duration: 0.3,
             onComplete: () => {
               gsap.to(saveBtn, {
-                backgroundColor: "",
+                backgroundColor: "", // Revert to class style
                 duration: 0.5,
                 delay: 0.5,
               });
@@ -159,27 +159,27 @@ export default function ProfilePage() {
   return (
     <div className="container mx-auto">
       <div className="flex items-center mb-6">
-        <div className="w-1 h-6 bg-teal-600 mr-3"></div>
-        <h1 className="text-2xl font-semibold text-gray-800">Profile</h1>
+        <div className="w-1 h-8 rounded-full bg-emerald-500 mr-4 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+        <h1 className="text-3xl font-bold text-white tracking-tight">Profile</h1>
       </div>
 
-      <Card className="profile-card border-gray-200 shadow-sm">
-        <CardHeader className="bg-gradient-to-r from-teal-600/10 to-teal-600/5 border-b pb-8">
-          <div className="flex flex-col md:flex-row md:items-center gap-4">
-            <div className="flex items-center justify-center w-20 h-20 rounded-full bg-teal-600/10 text-teal-600">
-              <User size={32} />
+      <Card className="profile-card border-white/10 bg-black/40 backdrop-blur-xl shadow-2xl text-white">
+        <CardHeader className="bg-white/5 border-b border-white/10 pb-8">
+          <div className="flex flex-col md:flex-row md:items-center gap-6">
+            <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+              <User size={36} />
             </div>
             <div>
-              <CardTitle className="text-xl text-gray-800">
+              <CardTitle className="text-2xl font-bold text-white tracking-tight">
                 Personal Information
               </CardTitle>
-              <CardDescription className="text-gray-500">
+              <CardDescription className="text-white/50 text-base mt-1">
                 Update your personal details and contact information
               </CardDescription>
             </div>
           </div>
         </CardHeader>
-        <CardContent className="pt-6">
+        <CardContent className="pt-8">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -188,11 +188,15 @@ export default function ProfilePage() {
                   name="firstName"
                   render={({ field }) => (
                     <FormItem className="form-field">
-                      <FormLabel>First Name</FormLabel>
+                      <FormLabel className="text-white/70">First Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your first name" {...field} />
+                        <Input
+                          placeholder="Enter your first name"
+                          {...field}
+                          className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-emerald-500/50 focus-visible:border-emerald-500 transition-all duration-300"
+                        />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-400" />
                     </FormItem>
                   )}
                 />
@@ -202,11 +206,15 @@ export default function ProfilePage() {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem className="form-field">
-                      <FormLabel>Last Name</FormLabel>
+                      <FormLabel className="text-white/70">Last Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your last name" {...field} />
+                        <Input
+                          placeholder="Enter your last name"
+                          {...field}
+                          className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-emerald-500/50 focus-visible:border-emerald-500 transition-all duration-300"
+                        />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-400" />
                     </FormItem>
                   )}
                 />
@@ -217,17 +225,18 @@ export default function ProfilePage() {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="form-field">
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className="text-white/70">Email</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Enter your email address"
                         {...field}
+                        className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-emerald-500/50 focus-visible:border-emerald-500 transition-all duration-300"
                       />
                     </FormControl>
-                    <FormDescription>
+                    <FormDescription className="text-white/40">
                       This email will be used for all communications.
                     </FormDescription>
-                    <FormMessage />
+                    <FormMessage className="text-red-400" />
                   </FormItem>
                 )}
               />
@@ -238,26 +247,27 @@ export default function ProfilePage() {
                   name="gender"
                   render={({ field }) => (
                     <FormItem className="form-field">
-                      <FormLabel>Gender</FormLabel>
+                      <FormLabel className="text-white/70">Gender</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value || undefined}
+                        defaultValue={field.value || undefined}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="bg-white/5 border-white/10 text-white data-[placeholder]:text-white/30 focus:ring-emerald-500/50 focus:border-emerald-500">
                             <SelectValue placeholder="Select gender" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
-                          <SelectItem value="male">Male</SelectItem>
-                          <SelectItem value="female">Female</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                          <SelectItem value="prefer-not-to-say">
+                        <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl">
+                          <SelectItem value="male" className="focus:bg-emerald-500/20 focus:text-white cursor-pointer">Male</SelectItem>
+                          <SelectItem value="female" className="focus:bg-emerald-500/20 focus:text-white cursor-pointer">Female</SelectItem>
+                          <SelectItem value="other" className="focus:bg-emerald-500/20 focus:text-white cursor-pointer">Other</SelectItem>
+                          <SelectItem value="prefer-not-to-say" className="focus:bg-emerald-500/20 focus:text-white cursor-pointer">
                             Prefer not to say
                           </SelectItem>
                         </SelectContent>
                       </Select>
-                      <FormMessage />
+                      <FormMessage className="text-red-400" />
                     </FormItem>
                   )}
                 />
@@ -281,14 +291,15 @@ export default function ProfilePage() {
                 name="phone"
                 render={({ field }) => (
                   <FormItem className="form-field">
-                    <FormLabel>Mobile Number</FormLabel>
+                    <FormLabel className="text-white/70">Mobile Number</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Enter your mobile number"
                         {...field}
+                        className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-emerald-500/50 focus-visible:border-emerald-500 transition-all duration-300"
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-red-400" />
                   </FormItem>
                 )}
               />
@@ -298,23 +309,23 @@ export default function ProfilePage() {
                 name="address"
                 render={({ field }) => (
                   <FormItem className="form-field">
-                    <FormLabel>Address</FormLabel>
+                    <FormLabel className="text-white/70">Address</FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="Enter your address"
-                        className="resize-none"
+                        className="resize-none bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-emerald-500/50 focus-visible:border-emerald-500 min-h-[100px] transition-all duration-300"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-red-400" />
                   </FormItem>
                 )}
               />
 
-              <CardFooter className="px-0 pt-4 flex justify-end">
+              <CardFooter className="px-0 pt-6 flex justify-end border-t border-white/10 mt-6">
                 <Button
                   type="submit"
-                  className="save-button bg-teal-600 hover:bg-teal-700 text-white"
+                  className="save-button bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-900/20 transition-all duration-300 hover:scale-[1.02] px-8"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -342,7 +353,7 @@ export default function ProfilePage() {
                       Saving...
                     </span>
                   ) : (
-                    <span className="flex items-center gap-2">
+                    <span className="flex items-center gap-2 font-medium">
                       <Save className="h-4 w-4" />
                       Save Changes
                     </span>

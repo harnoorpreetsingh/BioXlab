@@ -42,7 +42,7 @@ export type Booking = {
   date: string;
   lab: string;
   lab_branches?: Lab;
-  total_price: number;
+  totalPrice: number | null;
   tests?: Test[];
 };
 

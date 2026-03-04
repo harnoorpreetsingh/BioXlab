@@ -45,7 +45,7 @@ export default function RootLayout({
             <CartProvider>
               <Suspense fallback={<Loader />}>{children}</Suspense>
 
-              <CartContainer />
+              {/* <CartContainer /> */}
             </CartProvider>
             {/* Footer */}
             <FooterWrapper />

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Booking, Lab, User, Test, TestResult, TestCategory } from "../types";
 
 // Mock data for development and testing

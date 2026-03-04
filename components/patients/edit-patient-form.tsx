@@ -86,21 +86,26 @@ export function EditPatientForm({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle>Edit Patient</DialogTitle>
+      <DialogContent className="sm:max-w-[500px] border-white/10 bg-black/40 backdrop-blur-xl shadow-2xl text-white">
+        <DialogHeader className="space-y-1">
+          <DialogTitle className="text-xl font-semibold text-white">Edit Patient</DialogTitle>
+          <p className="text-sm text-white/50">Update patient details below</p>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 mt-4 animate-in fade-in zoom-in-95 duration-300">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="first_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>First Name</FormLabel>
+                    <FormLabel className="text-white/70">First Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="John" {...field} />
+                      <Input
+                        placeholder="John"
+                        {...field}
+                        className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-emerald-500/50 focus-visible:border-emerald-500"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -111,9 +116,13 @@ export function EditPatientForm({
                 name="last_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Last Name</FormLabel>
+                    <FormLabel className="text-white/70">Last Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Doe" {...field} />
+                      <Input
+                        placeholder="Doe"
+                        {...field}
+                        className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-emerald-500/50 focus-visible:border-emerald-500"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -126,13 +135,14 @@ export function EditPatientForm({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="text-white/70">Email</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
                       readOnly
                       placeholder="patient@example.com"
                       {...field}
+                      className="bg-white/5 border-white/10 text-white/50 placeholder:text-white/30 focus-visible:ring-emerald-500/50 focus-visible:border-emerald-500"
                     />
                   </FormControl>
                   <FormMessage />
@@ -145,9 +155,13 @@ export function EditPatientForm({
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone</FormLabel>
+                  <FormLabel className="text-white/70">Phone</FormLabel>
                   <FormControl>
-                    <Input placeholder="+1 (555) 000-0000" {...field} />
+                    <Input
+                      placeholder="+1 (555) 000-0000"
+                      {...field}
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-emerald-500/50 focus-visible:border-emerald-500"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -159,9 +173,13 @@ export function EditPatientForm({
               name="date_of_birth"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date of Birth</FormLabel>
+                  <FormLabel className="text-white/70">Date of Birth</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <Input
+                      type="date"
+                      {...field}
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-emerald-500/50 focus-visible:border-emerald-500 [color-scheme:dark]"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -173,9 +191,13 @@ export function EditPatientForm({
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel className="text-white/70">Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="123 Main St, City" {...field} />
+                    <Input
+                      placeholder="123 Main St, City"
+                      {...field}
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-emerald-500/50 focus-visible:border-emerald-500"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -187,7 +209,7 @@ export function EditPatientForm({
               name="gender"
               render={({ field }) => (
                 <FormItem className="space-y-3">
-                  <FormLabel>Gender</FormLabel>
+                  <FormLabel className="text-white/70">Gender</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -196,25 +218,25 @@ export function EditPatientForm({
                     >
                       <FormItem className="flex items-center space-x-2 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="male" />
+                          <RadioGroupItem value="male" className="border-white/20 text-emerald-500 focus:border-emerald-500" />
                         </FormControl>
-                        <FormLabel className="font-normal cursor-pointer">
+                        <FormLabel className="font-normal cursor-pointer text-white/80">
                           Male
                         </FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-2 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="female" />
+                          <RadioGroupItem value="female" className="border-white/20 text-emerald-500 focus:border-emerald-500" />
                         </FormControl>
-                        <FormLabel className="font-normal cursor-pointer">
+                        <FormLabel className="font-normal cursor-pointer text-white/80">
                           Female
                         </FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-2 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="other" />
+                          <RadioGroupItem value="other" className="border-white/20 text-emerald-500 focus:border-emerald-500" />
                         </FormControl>
-                        <FormLabel className="font-normal cursor-pointer">
+                        <FormLabel className="font-normal cursor-pointer text-white/80">
                           Other
                         </FormLabel>
                       </FormItem>
@@ -225,17 +247,18 @@ export function EditPatientForm({
               )}
             />
 
-            <DialogFooter className="mt-6">
+            <DialogFooter className="mt-8 gap-2 sm:gap-0">
               <Button
                 type="button"
-                variant="outline"
+                variant="ghost"
                 onClick={() => onOpenChange(false)}
+                className="text-white/70 hover:text-white hover:bg-white/10"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="bg-teal-600 hover:bg-teal-700"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white border-0 shadow-lg shadow-emerald-900/20"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Saving..." : "Update Patient"}

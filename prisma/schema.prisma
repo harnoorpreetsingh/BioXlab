@@ -130,6 +130,7 @@ model Booking {
   labId              String?       @map("lab") @db.Uuid
   totalPrice         Decimal?      @map("total_price") @db.Decimal
   collectionLocation String?       @map("collection_location")
+  paymentId          String?       @map("payment_id")
   createdAt          DateTime?     @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt          DateTime?     @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
   lab                LabBranch?    @relation(fields: [labId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -155,6 +156,19 @@ model TestBooking {
   @@index([bookingId], map: "idx_tests_bookings_booking_id")
   @@index([testId], map: "idx_tests_bookings_test_id")
   @@map("tests_bookings")
+}
+
+model Notification {
+  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name      String
+  email     String
+  subject   String
+  message   String
+  isRead    Boolean   @default(false) @map("is_read")
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("notifications")
 }
 
 enum role_enum {

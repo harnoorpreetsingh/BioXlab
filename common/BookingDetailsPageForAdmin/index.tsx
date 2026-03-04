@@ -8,7 +8,7 @@ import { gsap } from "gsap";
 import {
   ArrowLeft,
   Calendar,
-  DollarSign,
+  IndianRupee,
   FileText,
   MapPin,
 } from "lucide-react";
@@ -54,12 +54,12 @@ export default function BookingDetailsPageForAdmin() {
         const patientData = await fetchUserById(bookingData.userId);
         setPatient(patientData);
       }
-      
+
       // Fetch lab - lab_branches is already included in booking
       if (bookingData?.lab_branches) {
         setLab(bookingData.lab_branches);
       }
-      
+
       // Fetch test results
       fetchTestsBookings();
 
@@ -164,7 +164,7 @@ export default function BookingDetailsPageForAdmin() {
 
       <div className="grid gap-6">
         <Card className="booking-info border-gray-200 shadow-sm">
-         <BookingCardHeader booking={booking}/>
+          <BookingCardHeader booking={booking} />
           <CardContent className="pt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
@@ -210,8 +210,8 @@ export default function BookingDetailsPageForAdmin() {
                     Total Price
                   </h3>
                   <p className="mt-1 text-base font-medium flex items-center gap-1">
-                    <DollarSign className="h-4 w-4" />
-                    {booking.total_price ? Number(booking.total_price).toFixed(2) : '0.00'}
+                    <IndianRupee className="h-4 w-4" />
+                    {booking.totalPrice ? Number(booking.totalPrice).toFixed(2) : '0.00'}
                   </p>
                 </div>
               </div>

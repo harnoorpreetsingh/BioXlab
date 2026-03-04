@@ -6,7 +6,7 @@ import { gsap } from "gsap";
 import {
   ArrowLeft,
   Calendar,
-  DollarSign,
+  IndianRupee,
   FileText,
   MapPin,
 } from "lucide-react";
@@ -33,7 +33,7 @@ export default function PatientBookingDetailsPage() {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      
+
       try {
         // Fetch booking details with relations
         const bookingData = await fetchUserBookings(bookingId);
@@ -41,7 +41,7 @@ export default function PatientBookingDetailsPage() {
         setBooking(bookingData);
         setLab(bookingData?.lab_branches || null);
         setPatient(bookingData?.users || appUser || null);
-        
+
         // Fetch test results
         const testResultsData = await fetchBookingTests(bookingId);
         console.log("testResultsData", testResultsData);
@@ -49,10 +49,10 @@ export default function PatientBookingDetailsPage() {
       } catch (error) {
         console.error("Error fetching booking data:", error);
       }
-      
+
       setIsLoading(false);
     }
-    
+
     if (bookingId) fetchData();
     // GSAP animations
     const timer = setTimeout(() => {
@@ -183,8 +183,8 @@ export default function PatientBookingDetailsPage() {
                     Total Price
                   </h3>
                   <p className="mt-1 text-base font-medium flex items-center gap-1">
-                    <DollarSign className="h-4 w-4" />
-                    {booking.total_price ? Number(booking.total_price).toFixed(2) : '0.00'}
+                    <IndianRupee className="h-4 w-4" />
+                    {booking.totalPrice ? Number(booking.totalPrice).toFixed(2) : '0.00'}
                   </p>
                 </div>
               </div>
@@ -215,7 +215,7 @@ export default function PatientBookingDetailsPage() {
                     test={result.test_id}
                     result={result}
                     isAdmin={false}
-                    onResultUpdate={() => {}}
+                    onResultUpdate={() => { }}
                   />
                 </div>
               ))

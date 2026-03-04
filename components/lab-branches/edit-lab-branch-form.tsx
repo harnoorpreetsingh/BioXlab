@@ -80,22 +80,27 @@ export function EditLabBranchForm({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle>Edit Lab Branch</DialogTitle>
+      <DialogContent className="sm:max-w-[600px] border-white/10 bg-black/80 backdrop-blur-xl shadow-2xl text-white">
+        <DialogHeader className="pb-4 border-b border-white/10">
+          <DialogTitle className="text-2xl font-semibold text-white tracking-tight">Edit Lab Branch</DialogTitle>
+          <p className="text-sm text-white/50">Update details for this laboratory location.</p>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 pt-4 animate-in fade-in zoom-in-95 duration-300">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Branch Name</FormLabel>
+                  <FormLabel className="text-white/80">Branch Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Branch name" {...field} />
+                    <Input
+                      placeholder="Branch name"
+                      {...field}
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+                    />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-400" />
                 </FormItem>
               )}
             />
@@ -105,15 +110,15 @@ export function EditLabBranchForm({
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel className="text-white/80">Address</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Full address"
-                      className="resize-none min-h-[80px]"
+                      className="resize-none min-h-[80px] bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:ring-emerald-500/20"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-400" />
                 </FormItem>
               )}
             />
@@ -124,11 +129,15 @@ export function EditLabBranchForm({
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone</FormLabel>
+                    <FormLabel className="text-white/80">Phone</FormLabel>
                     <FormControl>
-                      <Input placeholder="+1 (555) 000-0000" {...field} />
+                      <Input
+                        placeholder="+1 (555) 000-0000"
+                        {...field}
+                        className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-red-400" />
                   </FormItem>
                 )}
               />
@@ -138,15 +147,16 @@ export function EditLabBranchForm({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className="text-white/80">Email</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
                         placeholder="branch@example.com"
                         {...field}
+                        className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:ring-emerald-500/20"
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-red-400" />
                   </FormItem>
                 )}
               />
@@ -157,14 +167,15 @@ export function EditLabBranchForm({
               name="opening_hours"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Opening Hours</FormLabel>
+                  <FormLabel className="text-white/80">Opening Hours</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Mon-Fri: 9am-5pm, Sat: 10am-2pm"
                       {...field}
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:ring-emerald-500/20"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-400" />
                 </FormItem>
               )}
             />
@@ -174,26 +185,31 @@ export function EditLabBranchForm({
               name="manager_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Manager Name</FormLabel>
+                  <FormLabel className="text-white/80">Manager Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Branch manager name" {...field} />
+                    <Input
+                      placeholder="Branch manager name"
+                      {...field}
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+                    />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-400" />
                 </FormItem>
               )}
             />
 
-            <DialogFooter className="mt-6">
+            <DialogFooter className="mt-8 pt-4 border-t border-white/10 gap-3">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
+                className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="bg-teal-600 hover:bg-teal-700"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-900/20"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Saving..." : "Update Branch"}

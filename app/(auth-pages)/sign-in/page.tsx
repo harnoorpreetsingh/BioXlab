@@ -1,233 +1,156 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Mail, Lock, AlertCircle, EyeIcon, EyeOffIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { toast } from "react-toastify";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Label } from "@/components/ui/label";
+import { motion } from "framer-motion";
+import { ArrowRight, Lock, Mail, ShieldCheck, AlertCircle, Loader2 } from "lucide-react";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
-const formSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  password: z.string().min(1, {
-    message: "Password is required.",
-  }),
-  rememberMe: z.boolean().optional(),
-});
+export default function SignIn() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(
+        searchParams.get("error") ? "Invalid email or password. Please try again." : null
+    );
 
-export default function SignInForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const verified = searchParams.get("verified");
-  const redirectTo = searchParams.get("redirect") || "/dashboard";
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setError(null);
 
-  useEffect(() => {
-    if (verified === "true") {
-      toast.success("Account verified successfully");
-    }
-  }, [verified]);
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      rememberMe: false,
-    },
-  });
+        try {
+            const result = await signIn("credentials", {
+                email,
+                password,
+                redirect: false,
+            });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsSubmitting(true);
-    setError(null);
+            if (result?.error) {
+                setError("Invalid email or password. Please try again.");
+                setIsLoading(false);
+            } else {
+                router.push("/dashboard");
+                router.refresh();
+            }
+        } catch (err) {
+            setError("An unexpected error occurred. Please try again.");
+            setIsLoading(false);
+        }
+    };
 
-    try {
-      const result = await signIn("credentials", {
-        email: values.email,
-        password: values.password,
-        redirect: false,
-      });
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="relative"
+        >
+            {/* Floating Icon */}
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full bg-slate-900 border-4 border-slate-950 shadow-2xl flex items-center justify-center z-20 group text-emerald-500">
+                <div className="absolute inset-0 bg-emerald-500/20 rounded-full animate-pulse blur-xl"></div>
+                <ShieldCheck className="w-10 h-10 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+            </div>
 
-      if (result?.error) {
-        setError("Invalid email or password");
-        toast.error("Invalid email or password");
-      } else if (result?.ok) {
-        toast.success("Signed in successfully");
-        window.location.href = redirectTo;
-      }
-    } catch (err: any) {
-      console.error("Sign in error:", err);
-      setError(err.message || "An error occurred");
-      toast.error(`Sign in failed: ${err.message || "Unknown error"}`);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+            <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl p-8 pt-16 shadow-2xl relative z-10 overflow-hidden">
+                {/* Ambient Glow */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-50"></div>
 
-  return (
-    <div className="flex min-h-screen flex-col lg:flex-row w-full">
-      {/* Left Column - Image */}
-      <div className="hidden bg-gray-100 lg:flex lg:w-1/2 lg:items-center lg:justify-center p-8">
-        <div className="relative max-h-max w-full max-w-md">
-          <Image
-            src="https://images.pexels.com/photos/9574511/pexels-photo-9574511.jpeg?auto=compress&cs=tinysrgb&w=600"
-            alt="Laboratory equipment"
-            width={600}
-            height={600}
-            className="rounded-lg object-cover shadow-lg !mt-auto"
-            priority
-          />
-          <div className="absolute inset-0 bg-teal-700/20 rounded-lg"></div>
-        </div>
-      </div>
+                <div className="text-center mb-8">
+                    <h1 className="text-2xl font-bold text-white mb-2">Welcome Back</h1>
+                    <p className="text-slate-400 text-sm">Sign in to access your laboratory dashboard</p>
+                </div>
 
-      {/* Right Column - Form */}
-      <div className="flex-1 p-6 lg:p-8 flex items-center justify-center">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-teal-700">User Login</h2>
-            <p className="text-gray-500 mt-2">
-              Don&apos;t have an account?{" "}
-              <Link href="/sign-up" className="text-teal-600 hover:underline">
-                Sign up
-              </Link>
-            </p>
-          </div>
-
-          {error && (
-            <Alert variant="destructive" className="mb-6">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <Input
-                          placeholder="email@example.com"
-                          className="pl-10"
-                          {...field}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                {/* Error Message */}
+                {error && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mb-6 flex items-center gap-3 bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-xl px-4 py-3"
+                    >
+                        <AlertCircle className="w-4 h-4 shrink-0" />
+                        <span>{error}</span>
+                    </motion.div>
                 )}
-              />
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <Input
-                          type={showPassword ? "text" : "password"}
-                          placeholder="••••••••"
-                          className="pl-10 pr-10"
-                          {...field}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
-                        >
-                          {showPassword ? (
-                            <EyeOffIcon className="h-4 w-4" />
-                          ) : (
-                            <EyeIcon className="h-4 w-4" />
-                          )}
-                        </button>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="space-y-4">
+                        <div className="group">
+                            <Label className="text-slate-300 mb-1.5 block text-xs uppercase tracking-wider font-semibold group-focus-within:text-emerald-400 transition-colors">Email Address</Label>
+                            <div className="relative">
+                                <Mail className="absolute left-3 top-2.5 w-5 h-5 text-slate-500 group-focus-within:text-emerald-500 transition-colors" />
+                                <Input
+                                    name="email"
+                                    type="email"
+                                    placeholder="Enter your email"
+                                    className="pl-10 bg-slate-950/50 border-slate-800 text-white placeholder:text-slate-600 focus:border-emerald-500/50 focus:ring-emerald-500/20 rounded-xl h-11 transition-all"
+                                    required
+                                    disabled={isLoading}
+                                />
+                            </div>
+                        </div>
 
-              <div className="flex items-center justify-between">
-                <FormField
-                  control={form.control}
-                  name="rememberMe"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center space-x-2 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel className="text-sm font-normal cursor-pointer">
-                        Remember me
-                      </FormLabel>
-                    </FormItem>
-                  )}
-                />
+                        <div className="group">
+                            <div className="flex items-center justify-between mb-1.5">
+                                <Label className="text-slate-300 block text-xs uppercase tracking-wider font-semibold group-focus-within:text-emerald-400 transition-colors">Password</Label>
+                                <Link
+                                    className="text-xs text-emerald-500 hover:text-emerald-400 hover:underline transition-colors"
+                                    href="/forgot-password"
+                                >
+                                    Forgot Password?
+                                </Link>
+                            </div>
+                            <div className="relative">
+                                <Lock className="absolute left-3 top-2.5 w-5 h-5 text-slate-500 group-focus-within:text-emerald-500 transition-colors" />
+                                <Input
+                                    type="password"
+                                    name="password"
+                                    placeholder="Enter your password"
+                                    className="pl-10 bg-slate-950/50 border-slate-800 text-white placeholder:text-slate-600 focus:border-emerald-500/50 focus:ring-emerald-500/20 rounded-xl h-11 transition-all"
+                                    required
+                                    disabled={isLoading}
+                                />
+                            </div>
+                        </div>
+                    </div>
 
-                <Link
-                  href="/forgot-password"
-                  className="text-sm text-teal-600 hover:underline"
-                >
-                  Forgot password?
-                </Link>
-              </div>
+                    <Button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-[0_0_20px_rgba(5,150,105,0.3)] hover:shadow-[0_0_30px_rgba(5,150,105,0.4)] h-12 rounded-xl text-base font-medium transition-all duration-300 border border-emerald-500/50 disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                Signing in...
+                            </>
+                        ) : (
+                            <>
+                                Sign In <ArrowRight className="w-4 h-4 ml-2" />
+                            </>
+                        )}
+                    </Button>
 
-              <Button
-                type="submit"
-                className="w-full bg-teal-600 hover:bg-teal-700"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Signing in..." : "Login"}
-              </Button>
-            </form>
-          </Form>
+                    <div className="text-center text-sm text-slate-400">
+                        Don&apos;t have an account?{" "}
+                        <Link className="text-emerald-400 hover:text-emerald-300 font-medium hover:underline transition-colors" href="/sign-up">
+                            Sign up
+                        </Link>
+                    </div>
+                </form>
+            </div>
 
-          <div className="mt-6 text-center text-sm text-gray-500">
-            <p>
-              By continuing, you agree to our{" "}
-              <Link href="/terms" className="text-teal-600 hover:underline">
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link href="/privacy" className="text-teal-600 hover:underline">
-                Privacy Policy
-              </Link>
+            <p className="text-center text-xs text-slate-600 mt-8">
+                Protected by BioXLab Security Systems. <br /> Access is monitored and logged.
             </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+        </motion.div>
+    );
 }

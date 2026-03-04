@@ -176,53 +176,54 @@ export function LabBranchesList() {
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex w-full sm:w-auto items-center space-x-2">
-          <div className="relative w-full sm:w-[300px]">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <div className="relative group w-full sm:w-auto">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50 group-focus-within:text-emerald-400 transition-colors" />
             <Input
               placeholder="Search branches..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-8"
+              className="w-full sm:w-[300px] focus-visible:sm:w-[400px] transition-all duration-300 bg-white/5 border-white/10 focus-visible:border-emerald-500/50 focus-visible:ring-emerald-500/20 rounded-full pl-10 text-white placeholder:text-white/30"
             />
           </div>
         </div>
         <CreateLabBranchForm onSuccess={handleCreateSuccess} />
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl overflow-hidden">
         <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Address</TableHead>
-              <TableHead>Contact</TableHead>
-              <TableHead>Manager</TableHead>
-              <TableHead className="w-[100px] text-right">Actions</TableHead>
+          <TableHeader className="bg-white/5">
+            <TableRow className="hover:bg-transparent border-b border-white/10">
+              <TableHead className="min-w-[150px] text-white/90 font-semibold pl-6">Name</TableHead>
+              <TableHead className="text-white/90 font-semibold">Address</TableHead>
+              <TableHead className="text-white/90 font-semibold">Contact</TableHead>
+              <TableHead className="text-white/90 font-semibold">Manager</TableHead>
+              <TableHead className="w-[100px] text-center text-white/90 font-semibold pr-6">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paginatedBranches.length > 0 ? (
               paginatedBranches.map((branch) => (
-                <TableRow key={branch.id}>
-                  <TableCell className="font-medium">{branch.name}</TableCell>
-                  <TableCell>
+                <TableRow key={branch.id} className="border-b border-white/5 hover:bg-white/10 transition-all duration-200">
+                  <TableCell className="font-medium text-white/90 group-hover:text-white transition-colors pl-6">{branch.name}</TableCell>
+                  <TableCell className="text-white/70 group-hover:text-white transition-colors">
                     {branch.address.length > 30
                       ? `${branch.address.substring(0, 30)}...`
                       : branch.address}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-white/70 group-hover:text-white transition-colors">
                     <div>{branch.phone}</div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-xs text-white/50">
                       {branch.email}
                     </div>
                   </TableCell>
-                  <TableCell>{branch.manager_name || "—"}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end space-x-2">
+                  <TableCell className="text-white/70 group-hover:text-white transition-colors">{branch.manager_name || "—"}</TableCell>
+                  <TableCell className="text-right pr-6">
+                    <div className="flex justify-end space-x-1">
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => handleView(branch)}
+                        className="h-8 w-8 text-white/60 hover:text-white hover:bg-white/10"
                       >
                         <Eye className="h-4 w-4" />
                         <span className="sr-only">View</span>
@@ -231,6 +232,7 @@ export function LabBranchesList() {
                         variant="ghost"
                         size="icon"
                         onClick={() => handleEdit(branch)}
+                        className="h-8 w-8 text-white/60 hover:text-white hover:bg-white/10"
                       >
                         <Pencil className="h-4 w-4" />
                         <span className="sr-only">Edit</span>
@@ -239,7 +241,7 @@ export function LabBranchesList() {
                         variant="ghost"
                         size="icon"
                         onClick={() => handleDelete(branch)}
-                        className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                        className="h-8 w-8 text-red-400/70 hover:text-red-400 hover:bg-red-500/10"
                       >
                         <Trash2 className="h-4 w-4" />
                         <span className="sr-only">Delete</span>
@@ -250,7 +252,7 @@ export function LabBranchesList() {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center">
+                <TableCell colSpan={5} className="h-24 text-center text-white/50">
                   No branches found.
                 </TableCell>
               </TableRow>
@@ -292,6 +294,7 @@ export function LabBranchesList() {
             size="sm"
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
+            className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white disabled:opacity-30"
           >
             Previous
           </Button>
@@ -302,6 +305,7 @@ export function LabBranchesList() {
               setCurrentPage((prev) => Math.min(prev + 1, totalPages))
             }
             disabled={currentPage === totalPages || totalPages === 0}
+            className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white disabled:opacity-30"
           >
             Next
           </Button>

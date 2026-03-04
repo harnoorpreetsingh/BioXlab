@@ -9,14 +9,14 @@ export default withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         const path = req.nextUrl.pathname;
-        
+
         // Public paths that don't require auth
-        const publicPaths = ["/sign-in", "/sign-up", "/forgot-password", "/", "/about-us", "/contact", "/services", "/team", "/tests"];
+        const publicPaths = ["/sign-in", "/sign-up", "/forgot-password", "/", "/about-us", "/contact", "/services", "/team", "/tests", "/book"];
         const isPublicPath = publicPaths.some(p => path.startsWith(p));
-        
+
         // Allow access to public paths
         if (isPublicPath) return true;
-        
+
         // For protected paths, require token
         return !!token;
       },

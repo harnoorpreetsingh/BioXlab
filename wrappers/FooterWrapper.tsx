@@ -2,7 +2,7 @@
 import { excludeNavRoutes } from "@/utils/constants";
 import React from "react";
 import { usePathname } from "next/navigation";
-import Footer from "@/common/Footer";
+import Footer from "@/components/home/Footer";
 
 const FooterWrapper = () => {
   const pathname = usePathname();

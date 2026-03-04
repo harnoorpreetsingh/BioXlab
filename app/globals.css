@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -79,7 +83,32 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+  /* slate-950 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #10b981;
+  /* emerald-500 */
+  border-radius: 9999px;
+  border: 2px solid #020617;
+  /* padding effect */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #059669;
+  /* emerald-600 */
 }

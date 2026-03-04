@@ -30,7 +30,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const response = await fetch(`/api/user?email=${userEmail}`);
       if (!response.ok) {
-        console.error("Error fetching app user");
+        // Only log errors that aren't 401 (unauthorized), as those are expected when not authenticated
+        if (response.status !== 401) {
+          console.error("Error fetching app user:", response.status, response.statusText);
+        }
         setAppUser(null);
         return;
       }
@@ -53,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (status === "authenticated" && session?.user) {
       setUser(session.user);
       setSession(session);
-      
+
       const userEmail = session.user.email;
       if (userEmail) {
         fetchAppUser(userEmail);

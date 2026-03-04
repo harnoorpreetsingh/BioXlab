@@ -114,24 +114,31 @@ export default function PatientDetailsPageForAdmin() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="flex items-center mb-6 page-header">
+    <div className="w-full max-w-[1600px] mx-auto p-6 space-y-8 animate-in fade-in duration-500">
+      <div className="flex items-center mb-8 page-header">
         <Button
           variant="ghost"
           size="sm"
-          className="mr-4"
+          className="mr-6 text-white/60 hover:text-white hover:bg-white/10 -ml-2 transition-all duration-300 group"
           onClick={() => router.push("/dashboard?tab=patients")}
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
+          <div className="bg-white/5 p-2 rounded-full mr-3 group-hover:bg-emerald-500/20 transition-colors">
+            <ArrowLeft className="h-4 w-4 text-white/70 group-hover:text-emerald-400" />
+          </div>
+          <span className="text-lg">Back to Patients</span>
         </Button>
-        <div className="w-1 h-6 bg-teal-600 mr-3"></div>
-        <h1 className="text-2xl font-semibold text-gray-800">
-          Patient Details
-        </h1>
       </div>
 
-      <div className="grid gap-6">
+      <div className="flex flex-col gap-2 mb-8 px-2">
+        <h1 className="text-4xl font-bold text-white tracking-tight">
+          Patient Details
+        </h1>
+        <p className="text-white/50 text-lg">
+          View and manage patient information and booking history.
+        </p>
+      </div>
+
+      <div className="grid gap-8">
         <div className="patient-card">
           <PatientInfoCard patient={patient} />
         </div>

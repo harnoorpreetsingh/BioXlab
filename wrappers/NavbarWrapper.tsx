@@ -1,7 +1,7 @@
 "use client";
 import { excludeNavRoutes } from "@/utils/constants";
 import React from "react";
-import Navbar from "../common/Navbar";
+import Navbar from "@/components/home/Navbar";
 import { usePathname } from "next/navigation";
 
 const NavbarWrapper = () => {
