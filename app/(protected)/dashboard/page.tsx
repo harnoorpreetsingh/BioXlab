@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { useCurrentUser } from "@/providers/AuthProvider";
 import { DashboardOverview } from "./_components/DashboardOverview";
 import { TestCategoriesList } from "@/components/test-categories/test-categories-list";
 import { LabBranchesList } from "@/components/lab-branches/lab-branches-list";
@@ -16,7 +17,9 @@ import { NotificationsList } from "@/components/notifications/NotificationsList"
 
 export default function DashboardPage() {
   const searchParams = useSearchParams();
-  const tab = searchParams.get("tab") || "dashboard";
+  const { appUser } = useCurrentUser();
+  const defaultTab = appUser?.role === "admin" ? "dashboard" : "bookings";
+  const tab = searchParams.get("tab") || defaultTab;
 
   return (
     <div className="w-full animate-in fade-in duration-500">

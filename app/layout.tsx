@@ -2,6 +2,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import Loader from "./loading";
+import { InitialLoader } from "@/components/initial-loader";
 import NavbarWrapper from "@/wrappers/NavbarWrapper";
 import FooterWrapper from "@/wrappers/FooterWrapper";
 import TopbarWrapper from "@/wrappers/TopbarWrapper";
@@ -20,6 +21,11 @@ export const metadata = {
   title: "BioXLab - Medical Laboratory",
   description:
     "BioXLab is a modern lab test booking platform where users can schedule medical tests, track appointments, and securely access their reports online.",
+  icons: {
+    icon: "/assests/images/Logo-compressed_Webpifier.webp",
+    shortcut: "/assests/images/Logo-compressed_Webpifier.webp",
+    apple: "/assests/images/Logo-compressed_Webpifier.webp",
+  },
 };
 
 const geistSans = Geist({
@@ -36,6 +42,7 @@ export default function RootLayout({
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground" cz-shortcut-listen="true">
         <NextAuthProvider>
+          <InitialLoader />
           {/* Topbar */}
           <TopbarWrapper />
           <AuthProvider>
@@ -61,7 +68,7 @@ export default function RootLayout({
           pauseOnFocusLoss
           draggable={false}
           pauseOnHover
-          theme="light"
+          theme="dark"
           transition={Slide}
         />
         {/* <- Add Toaster here */}

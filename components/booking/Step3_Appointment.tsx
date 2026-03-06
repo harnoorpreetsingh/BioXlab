@@ -253,7 +253,7 @@ const Step3_Appointment = ({ appointment, onAppointmentChange, onNext, onPrev }:
                 <Button
                     variant="outline"
                     onClick={onPrev}
-                    className="border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800"
+                    className="bg-transparent border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800"
                 >
                     Back to Patient Info
                 </Button>

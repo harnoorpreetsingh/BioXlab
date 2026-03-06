@@ -122,12 +122,17 @@ const Navbar = () => {
         <div className="container mx-auto flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center">
+            <Link href="/" className="flex items-center gap-2">
+              <img
+                src="/assests/images/Logo-compressed_Webpifier.webp"
+                alt="BioXLab Logo"
+                className="h-9 w-9 object-contain rounded-xl"
+              />
               <div>
                 <span className="text-emerald-600 font-bold text-xl">
-                  BioXLab
+                  BioX<span className="text-gray-700">Lab</span>
                 </span>
-                <span className="text-gray-600 block text-xs">MEDICAL LABORATORY</span>
+                <span className="text-gray-500 block text-xs">MEDICAL LABORATORY</span>
               </div>
             </Link>
           </div>
