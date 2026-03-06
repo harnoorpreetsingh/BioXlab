@@ -22,14 +22,17 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(booking);
     }
 
+    // Shared select for user/lab relations — only fields the frontend needs
+    const relationSelect = {
+      user: { select: { id: true, firstName: true, lastName: true, email: true } },
+      lab: { select: { id: true, name: true, address: true } },
+    };
+
     // Fetch single booking by ID with relations
     if (id) {
       const booking = await prisma.booking.findUnique({
         where: { id },
-        include: {
-          user: true,
-          lab: true,
-        },
+        include: relationSelect,
       });
 
       if (!booking) {
@@ -54,10 +57,7 @@ export async function GET(request: NextRequest) {
     // Fetch bookings by userId if provided, otherwise all bookings
     const bookings = await prisma.booking.findMany({
       where: userId ? { userId } : undefined,
-      include: {
-        user: true,
-        lab: true,
-      },
+      include: relationSelect,
       orderBy: { createdAt: "desc" },
     });
 
@@ -70,7 +70,9 @@ export async function GET(request: NextRequest) {
       lab: undefined,
     }));
 
-    return NextResponse.json(transformedBookings);
+    const response = NextResponse.json(transformedBookings);
+    response.headers.set("Cache-Control", "s-maxage=10, stale-while-revalidate=30");
+    return response;
   } catch (error) {
     console.error("Error fetching bookings:", error);
     return NextResponse.json(

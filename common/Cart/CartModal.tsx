@@ -83,8 +83,17 @@ export function CartModal({ open, onOpenChange }: CartModalProps) {
     }
 
     if (!appUser?.id) {
-      toast.error("User not found. Please sign in again.");
-      router.push("/sign-in?redirect=/tests?login=true");
+      toast.info("Please Sign Up first to complete your booking", {
+        icon: () => "🔐",
+        style: {
+          background: "#0f172a",
+          color: "#e2e8f0",
+          border: "1px solid #1e293b",
+          borderRadius: "12px",
+          boxShadow: "0 0 20px rgba(16,185,129,0.15)",
+        },
+      });
+      router.push("/sign-up");
       onOpenChange(false);
       return;
     }
@@ -136,8 +145,17 @@ export function CartModal({ open, onOpenChange }: CartModalProps) {
 
     try {
       if (!appUser?.id) {
-        toast.error("User not found. Please sign in again.");
-        router.push("/sign-in?redirect=/tests?login=true");
+        toast.info("Please Sign Up first to complete your booking", {
+          icon: () => "🔐",
+          style: {
+            background: "#0f172a",
+            color: "#e2e8f0",
+            border: "1px solid #1e293b",
+            borderRadius: "12px",
+            boxShadow: "0 0 20px rgba(16,185,129,0.15)",
+          },
+        });
+        router.push("/sign-up");
         onOpenChange(false);
         setIsSubmitting(false);
         return;
@@ -328,9 +346,9 @@ export function CartModal({ open, onOpenChange }: CartModalProps) {
                       disabled={(date) =>
                         date < new Date() ||
                         date >
-                          new Date(
-                            new Date().setMonth(new Date().getMonth() + 3)
-                          )
+                        new Date(
+                          new Date().setMonth(new Date().getMonth() + 3)
+                        )
                       }
                       initialFocus
                     />
@@ -427,7 +445,7 @@ export function CartModal({ open, onOpenChange }: CartModalProps) {
                 disabled={isSubmitting}
                 className="bg-teal-600 hover:bg-teal-700 text-white"
               >
-               {isSubmitting ? "Booking..." : "Complete Booking"}
+                {isSubmitting ? "Booking..." : "Complete Booking"}
               </Button>
             </DialogFooter>
           </form>

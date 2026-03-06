@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   fetchTestCategories,
-  fetchTestsAndCategories,
+  fetchTests,
   fetchPopularTests,
 } from "@/utils/data/tests";
 import type { Test, TestCategory } from "@/types";
@@ -39,7 +39,7 @@ export default function TestsPage() {
         setCategories(categoriesData || []);
 
         // Fetch all tests with categories
-        const testsData = await fetchTestsAndCategories();
+        const testsData = await fetchTests();
         setAllTests(testsData || []);
 
         // Fetch popular tests
@@ -113,11 +113,11 @@ export default function TestsPage() {
     return allTests.filter((test) => {
       const matchesSearch = searchQuery
         ? test.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          test.description?.toLowerCase().includes(searchQuery.toLowerCase())
+        test.description?.toLowerCase().includes(searchQuery.toLowerCase())
         : true;
       const matchesCategory = activeCategory
         ? test.test_category?.id === activeCategory ||
-          test.category === activeCategory
+        test.category === activeCategory
         : true;
       return matchesSearch && matchesCategory;
     });
