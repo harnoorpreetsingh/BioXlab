@@ -13,6 +13,7 @@ import Step5_Success from "./Step5_Success";
 import { TestWithCategory } from "@/components/tests/tests-list";
 import { createBooking, insertTestsBooking } from "@/utils/data/bookings";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface BookingFormData {
     selectedTests: TestWithCategory[];
@@ -22,6 +23,7 @@ interface BookingFormData {
 
 const BookingWizard = () => {
     const { data: session } = useSession();
+    const router = useRouter();
     const [currentStep, setCurrentStep] = useState(1);
     const totalSteps = 5;
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -87,6 +89,22 @@ const BookingWizard = () => {
     };
 
     const submitBooking = async () => {
+        // Check if user is authenticated
+        if (!session?.user) {
+            toast.info("Please Sign Up first to complete your booking", {
+                icon: () => "🔐",
+                style: {
+                    background: "#0f172a",
+                    color: "#e2e8f0",
+                    border: "1px solid #1e293b",
+                    borderRadius: "12px",
+                    boxShadow: "0 0 20px rgba(16,185,129,0.15)",
+                },
+            });
+            router.push("/sign-up");
+            return;
+        }
+
         setIsSubmitting(true);
         try {
             const { selectedTests, patientInfo, appointment } = formData;
@@ -154,7 +172,6 @@ const BookingWizard = () => {
         } catch (error) {
             console.error("Booking failed:", error);
             toast.error("Failed to process booking. Please try again.");
-        } finally {
             setIsSubmitting(false);
         }
     };
@@ -227,6 +244,33 @@ const BookingWizard = () => {
                     </motion.div>
                 </AnimatePresence>
             </div>
+
+            {/* Fullscreen Loading Overlay during Payment Redirection */}
+            <AnimatePresence>
+                {isSubmitting && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-950/80 backdrop-blur-md"
+                    >
+                        <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl flex flex-col items-center shadow-2xl max-w-sm mx-4 text-center">
+                            <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center justify-center mb-6 relative">
+                                <motion.div
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                                    className="absolute inset-0 rounded-xl border-t-2 border-emerald-500 opacity-50"
+                                />
+                                <div className="w-8 h-8 rounded-full border-4 border-slate-800 border-t-emerald-500 animate-spin" />
+                            </div>
+                            <h3 className="text-xl font-bold text-white mb-2">Preparing Checkout</h3>
+                            <p className="text-slate-400 text-sm">
+                                Please wait while we securely redirect you to our payment processor...
+                            </p>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

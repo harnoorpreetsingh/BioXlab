@@ -221,7 +221,7 @@ const Step1_SelectTests = ({ selectedTests, onTestsChange, onNext }: Step1Props)
                             <div className="flex items-center gap-3">
                                 <Button
                                     variant="outline"
-                                    className="hidden md:flex border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800"
+                                    className="hidden md:flex bg-transparent border-slate-700 text-slate-300 px-8 py-6 rounded-xl hover:text-white hover:bg-slate-800"
                                     onClick={() => onTestsChange([])}
                                 >
                                     Clear Selection
