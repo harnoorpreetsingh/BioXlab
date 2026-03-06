@@ -24,8 +24,9 @@ import { motion } from "framer-motion";
 export function DashboardSidebar() {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const activeTab = searchParams.get("tab") || "dashboard";
     const { appUser } = useCurrentUser();
+    const defaultTab = appUser?.role === "admin" ? "dashboard" : "bookings";
+    const activeTab = searchParams.get("tab") || defaultTab;
 
     const handleSignOut = async () => {
         try {
@@ -104,9 +105,11 @@ export function DashboardSidebar() {
             {/* Desktop Sidebar */}
             <aside className="hidden md:flex flex-col w-64 h-screen fixed left-0 top-0 bg-slate-950/95 backdrop-blur-xl border-r border-slate-800 z-50 transition-all duration-300">
                 <div className="p-6 flex items-center gap-3">
-                    <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-white shadow-lg">
-                        <FlaskConical className="w-6 h-6" />
-                    </div>
+                    <img
+                        src="/assests/images/Logo-compressed_Webpifier.webp"
+                        alt="BioXLab Logo"
+                        className="w-10 h-10 object-contain rounded-xl shadow-lg"
+                    />
                     <span className="text-xl font-bold tracking-tight text-white">
                         BioX<span className="text-emerald-500">Lab</span>
                     </span>
@@ -114,7 +117,7 @@ export function DashboardSidebar() {
 
                 <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto custom-scrollbar">
                     {filteredItems.map((item) => {
-                        const isActive = item.href ? false : (item.tab === activeTab || (!activeTab && item.tab === "dashboard"));
+                        const isActive = item.href ? false : (item.tab === activeTab);
                         return (
                             <Link
                                 key={item.label}
@@ -160,7 +163,7 @@ export function DashboardSidebar() {
             {/* Mobile Bottom Navigation */}
             <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-slate-950/90 backdrop-blur-xl border-t border-slate-800 z-50 flex items-center justify-around px-2 pb-safe">
                 {filteredItems.slice(0, 5).map((item) => { // Limit items for mobile
-                    const isActive = item.href ? false : (item.tab === activeTab || (!activeTab && item.tab === "dashboard"));
+                    const isActive = item.href ? false : (item.tab === activeTab);
                     return (
                         <Link
                             key={item.label}

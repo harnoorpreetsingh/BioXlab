@@ -3,25 +3,30 @@ import { cn } from "@/lib/utils";
 
 type StatusBadgeProps = {
   status:
-    | "completed"
-    | "pending"
-    | "cancelled"
-    | "in-progress"
-    | "paid"
-    | "failed"
-    | null
-    | undefined;
+  | "completed"
+  | "pending"
+  | "cancelled"
+  | "in-progress"
+  | "paid"
+  | "failed"
+  | "confirmed"
+  | "pending_payment"
+  | string
+  | null
+  | undefined;
   type?: "payment" | "booking" | "test";
 };
 
 export function StatusBadge({ status, type = "booking" }: StatusBadgeProps) {
   if (!status) return null;
   const getVariant = () => {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case "completed":
       case "paid":
+      case "confirmed":
         return "success";
       case "pending":
+      case "pending_payment":
         return "warning";
       case "cancelled":
       case "failed":
@@ -39,15 +44,15 @@ export function StatusBadge({ status, type = "booking" }: StatusBadgeProps) {
     <Badge
       variant="outline"
       className={cn(
-        "capitalize",
-        variant === "success" && "border-green-500 bg-green-50 text-green-700",
-        variant === "warning" &&
-          "border-yellow-500 bg-yellow-50 text-yellow-700",
-        variant === "destructive" && "border-red-500 bg-red-50 text-red-700",
-        variant === "info" && "border-blue-500 bg-blue-50 text-blue-700"
+        "capitalize font-medium px-2.5 py-0.5 whitespace-nowrap",
+        variant === "success" && "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",
+        variant === "warning" && "border-yellow-500/30 bg-yellow-500/10 text-yellow-400",
+        variant === "destructive" && "border-red-500/30 bg-red-500/10 text-red-400",
+        variant === "info" && "border-blue-500/30 bg-blue-500/10 text-blue-400",
+        variant === "default" && "border-slate-700 bg-slate-800/50 text-slate-300"
       )}
     >
-      {status.replace("-", " ")}
+      {status.replace(/[-_]/g, " ")}
     </Badge>
   );
 }

@@ -45,7 +45,9 @@ export async function GET(request: NextRequest) {
       updated_at: branch.updatedAt,
     }));
 
-    return NextResponse.json(transformed);
+    const response = NextResponse.json(transformed);
+    response.headers.set("Cache-Control", "s-maxage=60, stale-while-revalidate=120");
+    return response;
   } catch (error) {
     console.error("Error fetching lab branches:", error);
     return NextResponse.json(

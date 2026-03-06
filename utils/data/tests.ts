@@ -25,7 +25,7 @@ export const insertTest = async (data: TestFormValues) => {
 export const fetchTests = async () => {
   try {
     const response = await fetch("/api/tests");
-    
+
     if (!response.ok) {
       throw new Error("Failed to fetch tests");
     }
@@ -101,7 +101,7 @@ export const insertTestCategory = async (name: string, description: string) => {
 export const fetchTestCategories = async () => {
   try {
     const response = await fetch("/api/test-categories");
-    
+
     if (!response.ok) {
       throw new Error("Failed to fetch test categories");
     }
@@ -157,29 +157,12 @@ export const deleteTestCategory = async (id: string) => {
   }
 };
 
-// Function to fetch all tests and their categories
-export const fetchTestsAndCategories = async () => {
-  try {
-    const response = await fetch("/api/tests");
-    
-    if (!response.ok) {
-      throw new Error("Failed to fetch tests");
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    toast.error(`An error occurred: ${err}`);
-    return [];
-  }
-};
 
 // Function to fetch popular tests
 export const fetchPopularTests = async () => {
   try {
     const response = await fetch("/api/tests?popular=true");
-    
+
     if (!response.ok) {
       throw new Error("Failed to fetch popular tests");
     }
@@ -197,7 +180,7 @@ export const fetchPopularTests = async () => {
 export const fetchTestById = async (id: string) => {
   try {
     const response = await fetch(`/api/tests?id=${id}`);
-    
+
     if (!response.ok) {
       throw new Error("Failed to fetch test");
     }

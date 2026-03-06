@@ -17,7 +17,18 @@ export async function GET(request: NextRequest) {
     const testBookings = await prisma.testBooking.findMany({
       where: { bookingId },
       include: {
-        test: true,
+        test: {
+          select: {
+            id: true,
+            name: true,
+            cost: true,
+            price: true,
+            description: true,
+            idealRange: true,
+            preparation: true,
+            reportTime: true,
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -42,7 +53,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     // Handle array of test bookings
     if (Array.isArray(body)) {
       const testBookings = await prisma.testBooking.createMany({

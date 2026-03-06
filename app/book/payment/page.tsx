@@ -220,7 +220,7 @@ function PaymentContent() {
                     <Link href="/dashboard">
                         <Button
                             variant="outline"
-                            className="w-full sm:w-auto h-12 px-6 border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800 gap-2"
+                            className="w-full sm:w-auto h-12 px-6 bg-transparent border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800 gap-2"
                         >
                             <FileText className="w-4 h-4" />
                             View My Bookings

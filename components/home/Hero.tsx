@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Activity, Microscope, Dna, Zap } from "lucide-react";
-import Image from "next/image";
 
 const Hero = () => {
     return (
@@ -94,12 +93,13 @@ const Hero = () => {
                         >
                             <div className="relative w-full h-full rounded-[2rem] overflow-hidden shadow-2xl shadow-emerald-900/20 border border-slate-700/50 bg-slate-900/50 backdrop-blur-sm group">
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80 z-10" />
-                                <Image
-                                    src="https://images.unsplash.com/photo-1579165466734-7f35a4755657?auto=format&fit=crop&q=80&w=1000"
-                                    alt="Modern Laboratory"
-                                    fill
-                                    className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 group-hover:scale-105"
-                                    priority
+                                <video
+                                    src="/assests/video/BioXLab_Product_Video_Generation.mp4"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 group-hover:scale-105"
                                 />
 
                                 {/* Floating Data Points Overlay */}
