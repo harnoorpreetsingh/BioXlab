@@ -311,7 +311,7 @@ const Step2_PatientInfo = ({ patientInfo, onInfoChange, onNext, onPrev }: Step2P
                     <Button
                         variant="outline"
                         onClick={onPrev}
-                        className="border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800"
+                        className="bg-transparent border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800"
                     >
                         Back to Tests
                     </Button>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { TestTube2, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Footer = () => {
@@ -17,8 +17,8 @@ const Footer = () => {
                     {/* Brand */}
                     <div>
                         <Link href="/" className="flex items-center gap-2 mb-6 text-white group">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white shadow-lg">
-                                <TestTube2 className="w-6 h-6" />
+                            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
+                                <img src="/assests/images/Logo-compressed_Webpifier.webp" alt="BioXLab Logo" className="w-full h-full object-cover" />
                             </div>
                             <span className="text-xl font-bold tracking-tight">
                                 BioX<span className="text-emerald-500">Lab</span>

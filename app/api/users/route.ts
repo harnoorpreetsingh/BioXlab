@@ -9,10 +9,26 @@ export async function GET(request: NextRequest) {
     const email = searchParams.get("email");
     const role = searchParams.get("role");
 
+    // Common select — exclude password from all responses
+    const userSelect = {
+      id: true,
+      email: true,
+      firstName: true,
+      lastName: true,
+      dateOfBirth: true,
+      gender: true,
+      address: true,
+      phone: true,
+      role: true,
+      createdAt: true,
+      updatedAt: true,
+    };
+
     // Fetch single user by ID
     if (id) {
       const user = await prisma.user.findUnique({
         where: { id },
+        select: userSelect,
       });
 
       if (!user) {
@@ -26,6 +42,7 @@ export async function GET(request: NextRequest) {
     if (email) {
       const user = await prisma.user.findUnique({
         where: { email },
+        select: userSelect,
       });
 
       if (!user) {
@@ -39,6 +56,7 @@ export async function GET(request: NextRequest) {
     const users = await prisma.user.findMany({
       where: role ? { role: role as any } : undefined,
       orderBy: { createdAt: "desc" },
+      select: userSelect,
     });
 
     return NextResponse.json(users);

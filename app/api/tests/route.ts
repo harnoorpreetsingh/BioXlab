@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
           },
         },
       });
-      
+
       const transformedTests = tests.map((test: any) => ({
         ...test,
         test_category: test.category,
@@ -74,8 +74,10 @@ export async function GET(request: NextRequest) {
         createdAt: undefined,
         updatedAt: undefined,
       }));
-      
-      return NextResponse.json(transformedTests);
+
+      const popResponse = NextResponse.json(transformedTests);
+      popResponse.headers.set("Cache-Control", "s-maxage=30, stale-while-revalidate=60");
+      return popResponse;
     }
 
     // Fetch all tests with categories
@@ -107,7 +109,9 @@ export async function GET(request: NextRequest) {
       updatedAt: undefined,
     }));
 
-    return NextResponse.json(transformedTests);
+    const response = NextResponse.json(transformedTests);
+    response.headers.set("Cache-Control", "s-maxage=30, stale-while-revalidate=60");
+    return response;
   } catch (error) {
     console.error("Error fetching tests:", error);
     return NextResponse.json(
@@ -156,9 +160,9 @@ export async function PUT(request: NextRequest) {
     }
 
     const data: any = { ...restData };
-    
+
     // Note: duration is excluded because it's an unsupported PostgreSQL interval type in Prisma
-    
+
     // Transform category to categoryId if present
     if (category !== undefined) {
       data.categoryId = category;
@@ -168,7 +172,7 @@ export async function PUT(request: NextRequest) {
     if (ideal_range !== undefined) {
       data.idealRange = ideal_range;
     }
-    
+
     if (report_time !== undefined) {
       data.reportTime = report_time;
     }
@@ -180,7 +184,7 @@ export async function PUT(request: NextRequest) {
         data.cost = data.price;
       }
     }
-    
+
     if (cost !== undefined) {
       data.cost = cost ? parseFloat(cost) : null;
       if (price === undefined) {

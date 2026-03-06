@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
 import {
     ArrowRight,
-    UserPlus,
     Mail,
     Lock,
     User,
@@ -33,9 +32,9 @@ function SignUpForm() {
             className="relative"
         >
             {/* Floating Icon */}
-            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full bg-slate-900 border-4 border-slate-950 shadow-2xl flex items-center justify-center z-20 group text-emerald-500">
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full bg-slate-900 border-4 border-slate-950 shadow-2xl flex items-center justify-center z-20 group overflow-hidden">
                 <div className="absolute inset-0 bg-emerald-500/20 rounded-full animate-pulse blur-xl"></div>
-                <UserPlus className="w-10 h-10 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                <img src="/assests/images/Logo-compressed_Webpifier.webp" alt="BioXLab Logo" className="w-16 h-16 object-cover rounded-full relative z-10" />
             </div>
 
             <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl p-8 pt-16 shadow-2xl relative z-10 overflow-hidden">

@@ -50,9 +50,11 @@ const Navbar = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-white shadow-lg group-hover:scale-105 transition-transform duration-300">
-              <TestTube2 className="w-6 h-6" />
-            </div>
+            <img
+              src="/assests/images/Logo-compressed_Webpifier.webp"
+              alt="BioXLab Logo"
+              className="w-10 h-10 object-contain rounded-xl shadow-lg group-hover:scale-105 transition-transform duration-300"
+            />
             <span className="text-xl font-bold tracking-tight text-white transition-colors">
               BioX<span className="text-emerald-500">Lab</span>
             </span>

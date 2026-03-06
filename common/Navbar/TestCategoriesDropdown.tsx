@@ -7,7 +7,6 @@ import { gsap } from "gsap";
 import { GroupedTestCategory, Test } from "./types";
 import {
   fetchPopularTests,
-  fetchTestsAndCategories,
   fetchTests,
 } from "@/utils/data/tests";
 
@@ -97,34 +96,34 @@ export const TestCategoriesDropdown = ({
     const fetchTestsData = async () => {
       try {
         const data = await fetchTests();
-        
+
         // Type assertion to help TS understand the shape
         const typedData = data as Test[];
 
-      const grouped = typedData.reduce<
-        Record<string, { id: string; name: string }[]>
-      >((acc, curr) => {
-        const categoryName = curr.test_category?.name || "Uncategorized";
-        if (!acc[categoryName]) {
-          acc[categoryName] = [];
-        }
-        acc[categoryName].push({ id: curr.id, name: curr.name });
-        return acc;
-      }, {});
+        const grouped = typedData.reduce<
+          Record<string, { id: string; name: string }[]>
+        >((acc, curr) => {
+          const categoryName = curr.test_category?.name || "Uncategorized";
+          if (!acc[categoryName]) {
+            acc[categoryName] = [];
+          }
+          acc[categoryName].push({ id: curr.id, name: curr.name });
+          return acc;
+        }, {});
 
-      const formatted: GroupedTestCategory[] = Object.entries(grouped).map(
-        ([category, tests]) => ({
-          category,
-          tests,
-        })
-      );
+        const formatted: GroupedTestCategory[] = Object.entries(grouped).map(
+          ([category, tests]) => ({
+            category,
+            tests,
+          })
+        );
 
-      setTestCategories(formatted);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching tests:", error);
-      setLoading(false);
-    }
+        setTestCategories(formatted);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching tests:", error);
+        setLoading(false);
+      }
     };
 
     fetchTestsData();
